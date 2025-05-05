@@ -1,9 +1,11 @@
 
+using AutoMapper;
 using ClincSystem.DAL.DB;
 using ClincSystem.DAL.Entities;
 using ClincSystem.DAL.Repository.Implementation;
 using ClincSystem.DAL.Repository.Interfaces;
 using ClincSystem.DAL.UnitOfWork;
+using ClincSystem.Mapping;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,7 +41,11 @@ namespace ClincSystem
             builder.Services.AddScoped<IPatientRepository, PatientRepository>();
             builder.Services.AddScoped<ISpecializationRepository, SpecializationRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
-            
+            //Auto Mapping
+            builder.Services.AddSingleton(provider => new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>();
+            }).CreateMapper());
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
